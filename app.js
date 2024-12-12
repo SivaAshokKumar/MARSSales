@@ -1,35 +1,41 @@
-let expenses = [];
+import { initializeApp } from "https://www.gstatic.com/firebasejs/9.16.0/firebase-app.js";
+import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/9.16.0/firebase-firestore.js";
 
-function addExpense() {
-  const expensesDiv = document.getElementById("expenses");
-  const input = document.createElement("input");
-  input.type = "number";
-  input.className = "expense";
-  input.placeholder = "Enter Expense Amount";
-  expensesDiv.appendChild(input);
-}
+// Your Firebase Configuration
+const firebaseConfig = {
+  apiKey: "AIzaSyBkE7KpR817QYZwfpRAFrdGIs5mHhd88t4",
+  authDomain: "salesapp-4b26a.firebaseapp.com",
+  projectId: "salesapp-4b26a",
+  storageBucket: "salesapp-4b26a.firebasestorage.app",
+  messagingSenderId: "158172993620",
+  appId: "1:158172993620:web:0a387adfca3a4425c375c1"
+};
 
-function submitData() {
-  const saleAmount = parseFloat(document.getElementById("saleAmount").value);
-  const expenseInputs = document.querySelectorAll(".expense");
-  expenses = Array.from(expenseInputs).map(input => parseFloat(input.value || 0));
-  const totalExpenses = expenses.reduce((sum, expense) => sum + expense, 0);
-  const savings = saleAmount - totalExpenses;
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
 
-  // Display the results
-  const dashboard = document.getElementById("dashboard");
-  dashboard.innerHTML = `
-    <h2>Dashboard</h2>
-    <p><strong>Total Sale Amount:</strong> ${saleAmount}</p>
-    <p><strong>Total Expenses:</strong> ${totalExpenses}</p>
-    <p><strong>Savings:</strong> ${savings}</p>
-  `;
+// Reference to "expenses" collection
+const expensesCollection = collection(db, "expenses");
 
-  // Save the data to the database (back-end integration required)
-  saveToDatabase({ saleAmount, expenses, totalExpenses, savings });
-}
+// Save data on button click
+document.getElementById("saveButton").addEventListener("click", async () => {
+  const saleAmount = document.getElementById("saleAmount").value;
+  const expenseAmount = document.getElementById("expenseAmount").value;
 
-async function saveToDatabase(data) {
-  // Send data to backend server (use Firebase, Node.js, or another backend setup)
-  console.log("Data to be saved:", data);
-}
+  if (saleAmount && expenseAmount) {
+    try {
+      await addDoc(expensesCollection, {
+        sale: parseFloat(saleAmount),
+        expense: parseFloat(expenseAmount),
+        timestamp: new Date(),
+      });
+      alert("Data saved successfully!");
+    } catch (error) {
+      console.error("Error saving data:", error);
+      alert("Failed to save data. Please try again.");
+    }
+  } else {
+    alert("Please fill in both fields.");
+  }
+});
