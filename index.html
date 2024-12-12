@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sales and Expenses</title>
+  <style>
+    body {
+      background-color: #0000FF; /* Blue background */
+      color: white;
+      font-family: Arial, sans-serif;
+      text-align: center;
+    }
+    .container {
+      margin: 20px auto;
+      width: 90%;
+      max-width: 600px;
+    }
+    input {
+      width: 80%;
+      padding: 10px;
+      margin: 10px 0;
+      border: none;
+      border-radius: 5px;
+    }
+    button {
+      padding: 10px 20px;
+      margin: 20px 0;
+      border: none;
+      border-radius: 5px;
+      background-color: #FFA500;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #FF4500;
+    }
+    .dashboard {
+      margin-top: 30px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Sales and Expenses Tracker</h1>
+    <input type="number" id="saleAmount" placeholder="Enter Sale Amount">
+    <div id="expenses">
+      <input type="number" class="expense" placeholder="Enter Expense Amount">
+    </div>
+    <button onclick="addExpense()">Add Expense</button>
+    <button onclick="submitData()">Submit</button>
+    <div class="dashboard" id="dashboard"></div>
+  </div>
+
+  <script src="app.js"></script>
+  
+   <script type="module">
+    // Import the Firebase libraries
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.16.0/firebase-app.js";
+    import { getFirestore } from "https://www.gstatic.com/firebasejs/9.16.0/firebase-firestore.js";
+  
+    // Your Firebase configuration
+    const firebaseConfig = {
+  apiKey: "AIzaSyBkE7KpR817QYZwfpRAFrdGIs5mHhd88t4",
+  authDomain: "salesapp-4b26a.firebaseapp.com",
+  projectId: "salesapp-4b26a",
+  storageBucket: "salesapp-4b26a.firebasestorage.app",
+  messagingSenderId: "158172993620",
+  appId: "1:158172993620:web:0a387adfca3a4425c375c1"
+};
+  
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+  </script>
+  
+</body>
+</html>
